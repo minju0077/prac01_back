@@ -17,11 +17,14 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public UserDto.SignupRes signup(UserDto.SignupReq dto) {
         User user = dto.toEntity();
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
+
+        emailService.sendWelcomeMail(dto.getEmail());
 
         return UserDto.SignupRes.from(user);
     }
