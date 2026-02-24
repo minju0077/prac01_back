@@ -4,11 +4,14 @@ import com.example.demo.user.model.AuthUserDetails;
 import com.example.demo.user.model.UserDto;
 import com.example.demo.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @CrossOrigin
 @RequestMapping("/user")
@@ -40,8 +43,12 @@ public class UserController {
         }
 
         return ResponseEntity.ok("로그인 실패");
-
     }
 
-
+    @GetMapping("/verify")
+    public ResponseEntity verify(String uuid) {
+        userService.verify(uuid);
+        // 인증 성공하면 프론트로 리다이렉트
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).location(URI.create("http://localhost:5173")).build();
+    }
 }
