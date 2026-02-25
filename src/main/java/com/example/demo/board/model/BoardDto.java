@@ -41,14 +41,13 @@ public class BoardDto {
     public static class ListRes {
         private Long idx;
         private String title;
-        private String writer;
         private int replyCount;
 
         public static ListRes from(Board entity) {
             return ListRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
-                    .writer(entity.getUser().getName())
+                    .replyCount(entity.getReply().size())
                     .build();
         }
     }
