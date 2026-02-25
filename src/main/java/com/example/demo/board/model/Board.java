@@ -1,10 +1,8 @@
 package com.example.demo.board.model;
 
 import com.example.demo.common.model.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.user.model.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,10 +18,14 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String title;
-    private String contents;
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_idx")
+    private User user;
 
     public void update(BoardDto.RegReq dto) {
         this.title = dto.getTitle();
-        this.contents = dto.getContents();
+        this.content = dto.getContent();
     }
 }
