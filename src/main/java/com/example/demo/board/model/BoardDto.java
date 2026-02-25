@@ -2,16 +2,18 @@ package com.example.demo.board.model;
 
 import lombok.*;
 
+import java.util.List;
+
 public class BoardDto {
     @Getter
     public static class RegReq {
         private String title;
-        private String contents;
+        private String content;
 
         public Board toEntity() {
             return Board.builder()
                     .title(this.title)
-                    .contents(this.contents)
+                    .content(this.content)
                     .build();
         }
     }
@@ -21,13 +23,15 @@ public class BoardDto {
     public static class RegRes {
         private Long idx;
         private String title;
-        private String contents;
+        private String content;
+        private String username;
 
         public static RegRes from(Board entity) {
             return RegRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
-                    .contents(entity.getContents())
+                    .content(entity.getContent())
+                    .username(entity.getUser().getName())
                     .build();
         }
     }
@@ -37,11 +41,14 @@ public class BoardDto {
     public static class ListRes {
         private Long idx;
         private String title;
+        private String writer;
+        private int replyCount;
 
         public static ListRes from(Board entity) {
             return ListRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
+                    .writer(entity.getUser().getName())
                     .build();
         }
     }
@@ -51,13 +58,15 @@ public class BoardDto {
     public static class ReadRes {
         private Long idx;
         private String title;
-        private String contents;
+        private String content;
+        private String writer;
 
         public static ReadRes from(Board entity) {
             return ReadRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
-                    .contents(entity.getContents())
+                    .content(entity.getContent())
+                    .writer(entity.getUser().getName())
                     .build();
         }
     }
