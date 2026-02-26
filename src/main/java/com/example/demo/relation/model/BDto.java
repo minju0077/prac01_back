@@ -17,7 +17,7 @@ public class BDto {
                     .b02(this.getB02())
                     .a(A.builder()
                             .idx(aIdx)
-                            .a01()
+                            .build()
                     )
                     .build();
         }
