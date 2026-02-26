@@ -51,6 +51,7 @@ public class BoardDto {
                     .title(entity.getTitle())
                     .writer(entity.getUser().getName())
                     .likeslist(entity.getLikesList().size())
+                    .replyCount(entity.getReply().size())
                     .build();
         }
     }

@@ -1,6 +1,7 @@
 package com.example.demo.user.model;
 
 import com.example.demo.board.model.Board;
+import com.example.demo.reply.model.Reply;
 import com.example.demo.likes.model.Likes;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Board> boardList;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Reply> replyList;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Likes> likesList;

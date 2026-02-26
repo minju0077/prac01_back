@@ -1,6 +1,7 @@
 package com.example.demo.board.model;
 
 import com.example.demo.common.model.BaseEntity;
+import com.example.demo.reply.model.Reply;
 import com.example.demo.likes.model.Likes;
 import com.example.demo.user.model.User;
 import jakarta.persistence.*;
@@ -26,6 +27,9 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_idx")
     private User user;
+
+    @OneToMany(mappedBy="board", fetch = FetchType.LAZY)
+    private List<Reply> reply;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<Likes> likesList;
