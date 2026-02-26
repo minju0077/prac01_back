@@ -41,12 +41,16 @@ public class BoardDto {
     public static class ListRes {
         private Long idx;
         private String title;
+        private String writer;
         private int replyCount;
+        private int likeslist;
 
         public static ListRes from(Board entity) {
             return ListRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
+                    .writer(entity.getUser().getName())
+                    .likeslist(entity.getLikesList().size())
                     .replyCount(entity.getReply().size())
                     .build();
         }
@@ -59,6 +63,7 @@ public class BoardDto {
         private String title;
         private String content;
         private String writer;
+        private int likeslist;
 
         public static ReadRes from(Board entity) {
             return ReadRes.builder()
@@ -66,6 +71,7 @@ public class BoardDto {
                     .title(entity.getTitle())
                     .content(entity.getContent())
                     .writer(entity.getUser().getName())
+                    .likeslist(entity.getLikesList().size())
                     .build();
         }
     }
