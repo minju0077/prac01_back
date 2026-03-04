@@ -1,6 +1,8 @@
 package com.example.demo.board;
 
 import com.example.demo.common.model.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.board.model.BoardDto;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,11 @@ import java.util.List;
 @RequestMapping("/board")
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "게시판 기능")
 public class BoardController {
     private final BoardService boardService;
 
+    @Operation(summary = "게시글 등록", description = "제목, 내용을 입력해서 게시글을 작성하는 가능")
     @PostMapping("/reg")
     public ResponseEntity register(@RequestBody BoardDto.RegReq dto) {
         BoardDto.RegRes result = boardService.register(dto);
@@ -23,8 +27,8 @@ public class BoardController {
 
 
     @GetMapping("/list")
-    public ResponseEntity list() {
-        List<BoardDto.ListRes> dto = boardService.list();
+    public ResponseEntity list(int page, int size) {
+        List<BoardDto.ListRes> dto = boardService.list(page, size);
         return ResponseEntity.ok(BaseResponse.success(dto));
     }
 

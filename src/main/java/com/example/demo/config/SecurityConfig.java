@@ -21,6 +21,8 @@ package com.example.demo.config;
 */
 
 import com.example.demo.config.filter.JwtFilter;
+import com.example.demo.config.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.example.demo.config.oauth2.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,36 +31,32 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+    private final OAuth2UserService oAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        // OAuth2 로그인(카카오, 구글 등) 기능을 활성화하겠다.
+        http.oauth2Login(
+                config -> {
+                    // 로그인 성공 후에 카카오로부터 사용자 정보를 받아오는 과정을 설정하겠다.
+                    config.userInfoEndpoint(endpoint ->
+                            // ⭐사용자 정보를 가져오고 DB에 저장하는 그 복잡한 로직은,
+                            // 내가 미리 만들어둔 oAuth2UserService 클래스에 다 적어놨으니 이걸 실행해라
+                            endpoint.userService(oAuth2UserService));
+        });
+
+
         http.authorizeHttpRequests(
                 (auth) -> auth
                         .requestMatchers("/user/login", "/user/signup", "/user/verify").permitAll()
@@ -74,5 +72,16 @@ public class SecurityConfig {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

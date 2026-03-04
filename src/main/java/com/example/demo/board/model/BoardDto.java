@@ -1,12 +1,25 @@
 package com.example.demo.board.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public class BoardDto {
+
+    @Getter
+    @Builder
+    public static class PageRes{
+        private List<ListRes> boardList;
+        private int totalPage;
+        private long totalCount;
+        private int currentPage;
+        private int currentSize;
+    }
     @Getter
     public static class RegReq {
+        @Schema(description = "제목, 제목은 50글자까지만 가능합니다.", required = true, example = "제목01")
         private String title;
         private String content;
 

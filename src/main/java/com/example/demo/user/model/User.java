@@ -5,6 +5,7 @@ import com.example.demo.reply.model.Reply;
 import com.example.demo.likes.model.Likes;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -19,10 +20,14 @@ public class User {
     private Long idx;
     private String email;
     private String name;
+
     @Setter
     private String password;
+
     @Setter
     private boolean enable;
+
+    @ColumnDefault("'ROLE_USER'")
     private String role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

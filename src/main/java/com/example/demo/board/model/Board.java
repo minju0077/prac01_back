@@ -18,10 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Board extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+
+    @Column(nullable = false, length = 100)
     private String title;
+
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

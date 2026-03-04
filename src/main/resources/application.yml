@@ -3,7 +3,35 @@ jwt:
   expire: ${JWT_EXPIRE}
 
 
+
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            authorization-grant-type: authorization_code
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+
+          kakao:
+            client-id: 06e1f8664885a2733f1fb99bca84f539
+            client-secret: rOr7LOi828omztfZi20HiO2KpD1CSvO0
+            client-name: kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            scope: profile_nickname
+            client-authentication-method: client_secret_post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
   application:
     name: spring04
   mail:
@@ -35,5 +63,6 @@ spring:
 
 logging:
   level:
+    com.example.demo: debug
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace

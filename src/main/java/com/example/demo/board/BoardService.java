@@ -18,7 +18,7 @@ public class BoardService {
         return BoardDto.RegRes.from(entity);
     }
 
-    public List<BoardDto.ListRes> list() {
+    public List<BoardDto.ListRes> list(int page, int size) {
         List<Board> boardList = boardRepository.findAll();
         return boardList.stream().map(BoardDto.ListRes::from).toList();
     }

@@ -3,12 +3,18 @@ package com.example.demo.common.exception;
 import com.example.demo.common.model.BaseResponse;
 import com.example.demo.common.model.BaseResponseStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity handlerValidationException(MethodArgumentNotValidException e){
+//        return ResponseEntity.status()
+//    }
+
+    @ExceptionHandler(BaseException.class)
     public ResponseEntity handlerException(BaseException e){
         BaseResponseStatus status = e.getStatus();
         int errorCode = status.getCode();
